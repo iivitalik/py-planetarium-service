@@ -47,6 +47,12 @@ class Reservation(models.Model):
     def __str__(self):
         return f"{self.user} - {self.created_at}"
 
+    def get_queryset(self):
+        return Reservation.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class Ticket(models.Model):
     row = models.IntegerField()

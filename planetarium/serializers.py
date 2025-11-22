@@ -18,7 +18,7 @@ class AstronomyShowSerializer(serializers.ModelSerializer):
 class ShowThemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShowTheme
-        fields = ["name"]
+        fields = "__all__"
 
 
 class ShowSessionSerializer(serializers.ModelSerializer):
@@ -36,7 +36,8 @@ class PlanetariumDomeSerializer(serializers.ModelSerializer):
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ["created_at"]
+        fields = ["created_at", "user", "id"]
+        read_only_fields = ["created_at", "id"]
 
 
 class TicketSerializer(serializers.ModelSerializer):

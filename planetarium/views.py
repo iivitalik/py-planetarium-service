@@ -9,6 +9,8 @@ from planetarium.serializers import AstronomyShowSerializer, ShowThemeSerializer
 class AstronomyShowViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet
 ):
     queryset = AstronomyShow.objects.all()
@@ -18,6 +20,8 @@ class AstronomyShowViewSet(
 class ShowThemeViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet
 ):
     queryset = ShowTheme.objects.all()
@@ -27,6 +31,8 @@ class ShowThemeViewSet(
 class ShowSessionViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet
 ):
     queryset = ShowSession.objects.all()
@@ -35,6 +41,8 @@ class ShowSessionViewSet(
 
 class PlanetariumDomeViewSet(
     mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     GenericViewSet
 ):
@@ -43,8 +51,10 @@ class PlanetariumDomeViewSet(
 
 
 class ReservationViewSet(
-    mixins.ListModelMixin,
     mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet
 ):
     queryset = Reservation.objects.all()
@@ -54,6 +64,8 @@ class ReservationViewSet(
 class TicketViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.CreateModelMixin,
     GenericViewSet
 ):
     queryset = Ticket.objects.all()
