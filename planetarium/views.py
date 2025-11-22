@@ -1,4 +1,5 @@
 from rest_framework import mixins
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
 from planetarium.models import AstronomyShow, ShowTheme, ShowSession, Reservation, Ticket, PlanetariumDome
@@ -35,7 +36,9 @@ class ShowSessionViewSet(
     mixins.UpdateModelMixin,
     GenericViewSet
 ):
-    queryset = ShowSession.objects.all()
+    queryset = ShowSession.objects.select_related(
+        "astronomy_show", "planetarium_dome"
+    ).prefetch_related("ticket_set")
     serializer_class = ShowSessionSerializer
 
 
@@ -59,6 +62,15 @@ class ReservationViewSet(
 ):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+
+
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Reservation.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class TicketViewSet(

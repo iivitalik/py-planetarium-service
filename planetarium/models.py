@@ -1,13 +1,18 @@
 from django.contrib.auth.models import User
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
 
+    class Meta:
+        ordering = ["title"]
+
     def __str__(self):
         return self.title
+
 
 
 class ShowTheme(models.Model):
@@ -23,8 +28,18 @@ class PlanetariumDome(models.Model):
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
+
+    def get_seats_in_row(self):
+        return self.seats_in_row
+
+    @property
+    def capacity(self):
+        return self.rows * self.seats_in_row
 
 
 class ShowSession(models.Model):
@@ -39,6 +54,14 @@ class ShowSession(models.Model):
     def __str__(self):
         return f"{self.astronomy_show} - {self.show_time}"
 
+    @property
+    def tickets_sold(self):
+        return self.tickets_set.count()
+
+    @property
+    def tickets_available(self):
+        dome = self.planetarium_dome
+        return dome.capacity - self.tickets_sold
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -46,12 +69,6 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.created_at}"
-
-    def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 
 class Ticket(models.Model):
@@ -62,5 +79,49 @@ class Ticket(models.Model):
         on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
 
+    @staticmethod
+    def validate_ticket(row, seat, planetarium_dome, error_to_raise):
+        for ticket_attr_value, ticket_attr_name, planetarium_dome_attr_name in [
+            (row, "row", "rows"),
+            (seat, "seat", "seats_in_row"),
+        ]:
+            count_attrs = getattr(planetarium_dome, planetarium_dome_attr_name)
+            if not (1 <= ticket_attr_value <= count_attrs):
+                raise error_to_raise(
+                    {
+                        ticket_attr_name: f"{ticket_attr_name} "
+                                          f"number must be in available range: "
+                                          f"(1, {planetarium_dome_attr_name}): "
+                                          f"(1, {count_attrs})"
+                    }
+                )
+
+    def clean(self):
+        Ticket.validate_ticket(
+            self.row,
+            self.seat,
+            self.show_session.planetarium_dome,
+            ValidationError,
+        )
+
+    def save(
+            self,
+            *args,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
+    ):
+        self.full_clean()
+        return super(Ticket, self).save(
+            force_insert, force_update, using, update_fields
+        )
+
     def __str__(self):
-        return f"{self.row} - {self.seat}"
+        return (
+            f"{str(self.show_session)} (row: {self.row}, seat: {self.seat})"
+        )
+
+    class Meta:
+        unique_together = ("show_session", "row", "seat")
+        ordering = ["row", "seat"]
