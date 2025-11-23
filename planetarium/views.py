@@ -2,9 +2,26 @@ from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
-from planetarium.models import AstronomyShow, ShowTheme, ShowSession, Reservation, Ticket, PlanetariumDome
-from planetarium.serializers import AstronomyShowSerializer, ShowThemeSerializer, ShowSessionSerializer, \
-    ReservationSerializer, TicketSerializer, PlanetariumDomeSerializer
+from planetarium.models import (
+    AstronomyShow,
+    ShowTheme,
+    ShowSession,
+    Reservation,
+    Ticket,
+    PlanetariumDome
+)
+from planetarium.pagination import (
+    ShowSessionPagination,
+    ReservationPagination
+)
+from planetarium.serializers import (
+    AstronomyShowSerializer,
+    ShowThemeSerializer,
+    ShowSessionSerializer,
+    ReservationSerializer,
+    TicketSerializer,
+    PlanetariumDomeSerializer
+)
 
 
 class AstronomyShowViewSet(
@@ -16,6 +33,7 @@ class AstronomyShowViewSet(
 ):
     queryset = AstronomyShow.objects.all()
     serializer_class = AstronomyShowSerializer
+    pagination_class = ReservationPagination
 
 
 class ShowThemeViewSet(
@@ -27,6 +45,7 @@ class ShowThemeViewSet(
 ):
     queryset = ShowTheme.objects.all()
     serializer_class = ShowThemeSerializer
+    pagination_class = ReservationPagination
 
 
 class ShowSessionViewSet(
@@ -40,6 +59,7 @@ class ShowSessionViewSet(
         "astronomy_show", "planetarium_dome"
     ).prefetch_related("ticket_set")
     serializer_class = ShowSessionSerializer
+    pagination_class = ShowSessionPagination
 
 
 class PlanetariumDomeViewSet(
@@ -51,6 +71,8 @@ class PlanetariumDomeViewSet(
 ):
     queryset = PlanetariumDome.objects.all()
     serializer_class = PlanetariumDomeSerializer
+    pagination_class = ReservationPagination
+
 
 
 class ReservationViewSet(
@@ -62,8 +84,7 @@ class ReservationViewSet(
 ):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
-
-
+    pagination_class = ReservationPagination
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -82,3 +103,4 @@ class TicketViewSet(
 ):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    pagination_class = ReservationPagination
