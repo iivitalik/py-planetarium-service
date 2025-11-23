@@ -1,6 +1,18 @@
+import os
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
 from rest_framework.exceptions import ValidationError
+
+
+def create_custom_path(instance, filename):
+   _, extension = os.path.splitext(filename)
+   return os.path.join(
+       "uploads/images/",
+       f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
+   )
 
 
 class AstronomyShow(models.Model):
@@ -27,6 +39,7 @@ class PlanetariumDome(models.Model):
     name = models.CharField(max_length=100)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
+    image = models.ImageField(upload_to="uploads/")
 
     class Meta:
         ordering = ["name"]
