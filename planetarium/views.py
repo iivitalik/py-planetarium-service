@@ -14,6 +14,7 @@ from planetarium.pagination import (
     ShowSessionPagination,
     ReservationPagination
 )
+from planetarium.permissions import IsAdminOrIfAuthenticatedReadOnly
 from planetarium.serializers import (
     AstronomyShowSerializer,
     ShowThemeSerializer,
@@ -34,6 +35,8 @@ class AstronomyShowViewSet(
     queryset = AstronomyShow.objects.all()
     serializer_class = AstronomyShowSerializer
     pagination_class = ReservationPagination
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+
 
 
 class ShowThemeViewSet(
@@ -46,6 +49,8 @@ class ShowThemeViewSet(
     queryset = ShowTheme.objects.all()
     serializer_class = ShowThemeSerializer
     pagination_class = ReservationPagination
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+
 
 
 class ShowSessionViewSet(
@@ -60,6 +65,8 @@ class ShowSessionViewSet(
     ).prefetch_related("ticket_set")
     serializer_class = ShowSessionSerializer
     pagination_class = ShowSessionPagination
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+
 
 
 class PlanetariumDomeViewSet(
@@ -72,6 +79,7 @@ class PlanetariumDomeViewSet(
     queryset = PlanetariumDome.objects.all()
     serializer_class = PlanetariumDomeSerializer
     pagination_class = ReservationPagination
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 
@@ -104,3 +112,5 @@ class TicketViewSet(
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     pagination_class = ReservationPagination
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+

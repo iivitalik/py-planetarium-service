@@ -1,5 +1,5 @@
 from rest_framework import generics, authentication, permissions
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from user.serializers import UserSerializer
 
 
@@ -9,7 +9,7 @@ class CreateUserView(generics.CreateAPIView):
 
 class ManageUserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
-    authentication_classes = (authentication.TokenAuthentication,)
+    authentication_classes = (JWTAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self):
