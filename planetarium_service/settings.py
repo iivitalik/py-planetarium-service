@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "planetarium_service",
     "planetarium",
+    "user",
+
 ]
 
 MIDDLEWARE = [
@@ -115,6 +117,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = "user.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -126,7 +129,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "planetarium_service.User"
 
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
