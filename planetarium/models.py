@@ -19,6 +19,7 @@ def create_custom_path(instance, filename):
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
+    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
 
     class Meta:
         ordering = ["title"]
