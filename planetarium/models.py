@@ -11,7 +11,7 @@ def create_custom_path(instance, filename):
    _, extension = os.path.splitext(filename)
    return os.path.join(
        "uploads/images/",
-       f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
+       f"{slugify(instance.name)}-{uuid.uuid4()}{extension}"
    )
 
 
@@ -39,7 +39,7 @@ class PlanetariumDome(models.Model):
     name = models.CharField(max_length=100)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
-    image = models.ImageField(upload_to="uploads/")
+    image = models.ImageField(upload_to="uploads/", blank=True, null=True)
 
     class Meta:
         ordering = ["name"]

@@ -46,6 +46,11 @@ class PlanetariumDomeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class PlanetariumDomeImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlanetariumDome
+        fields = ("id", "image")
+
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         validators = [
@@ -78,3 +83,6 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 class ReservationListSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=False, allow_empty=False)
+    class Meta:
+        model = Reservation
+        fields = ["id", "tickets", "created_at", "user"]
