@@ -8,9 +8,10 @@ class CreateUserView(generics.CreateAPIView):
     authentication_classes = ()
     permission_classes = ()
 
+
 class ManageUserView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    authentication_classes = (JWTAuthentication,)
+    #authentication_classes = (JWTAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self):
