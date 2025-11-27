@@ -18,11 +18,16 @@ class AstronomyShowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AstronomyShowListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AstronomyShow
+        fields = ("id", "title", "image")
+
+
 class AstronomyShowImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AstronomyShow
         fields = ("id", "image")
-
 
 
 class ShowThemeSerializer(serializers.ModelSerializer):
@@ -45,6 +50,12 @@ class ShowSessionSerializer(serializers.ModelSerializer):
             "astronomy_show_title", "dome_name", "dome_capacity",
             "tickets_sold", "tickets_available"
         ]
+
+
+class ShowSessionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShowSession
+        fields = "__all__"
 
 
 class PlanetariumDomeSerializer(serializers.ModelSerializer):

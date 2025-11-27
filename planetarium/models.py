@@ -33,8 +33,12 @@ class ShowTheme(models.Model):
     name = models.CharField(max_length=100)
     shows = models.ManyToManyField(AstronomyShow)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
+
 
 
 class PlanetariumDome(models.Model):
@@ -77,6 +81,9 @@ class ShowSession(models.Model):
     def tickets_available(self):
         dome = self.planetarium_dome
         return dome.capacity - self.tickets_sold
+
+    class Meta:
+        ordering = ["-show_time"]
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
