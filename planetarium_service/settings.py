@@ -86,11 +86,11 @@ WSGI_APPLICATION = "planetarium_service.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
+        "NAME": os.environ.get("POSTGRES_DB", "planetarium"),
+        "USER": os.environ.get("POSTGRES_USER", "planetarium"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "planetarium"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
