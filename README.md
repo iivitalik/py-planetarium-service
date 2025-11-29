@@ -30,6 +30,8 @@ export SECRET_KEY=<your secret key>
 python manage.py migrate
 python manage.py runserver
 python manage.py runserver  
+```
+
 
 # Run with docker
 
@@ -37,7 +39,7 @@ Docker should be installed
 ```bash
 docker-compose build  
 docker-compose up  
-
+```
 # Getting access
 
 - create user via /api/user/register/  
