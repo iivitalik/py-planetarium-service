@@ -2,7 +2,6 @@ import os
 import uuid
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 from rest_framework.exceptions import ValidationError
@@ -84,6 +83,7 @@ class ShowSession(models.Model):
 
     class Meta:
         ordering = ["-show_time"]
+
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

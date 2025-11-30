@@ -1,9 +1,6 @@
-import tempfile
-import os
 from datetime import datetime
 from django.utils.timezone import make_aware
 
-from PIL import Image
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
